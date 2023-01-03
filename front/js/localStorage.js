@@ -36,7 +36,7 @@ function addCart(_id, quantity) {
         Cart.push(product);
 
     }
-    saveCart(Cart); 
+    saveCart(Cart); // On sauvegarde le panier
 }
 
 
