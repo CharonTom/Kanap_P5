@@ -1,28 +1,81 @@
-const fetchCanap = async () => {
-    fetch("http://localhost:3000/api/products")
+const url = new URL(window.location.href);      //  Créer une variable qui récupere l'URL courante.
+
+const idProduct = url.searchParams.get("id");   // Créer une variable qui récupere l'id de l'URL
+console.log(idProduct);                       // Affiche cette varaible
+
+
+// Recupère les Sélecteurs
+
+const titleProduct = document.getElementById("title");
+const priceProduct = document.getElementById("price");
+const descriptionProduct = document.getElementById("description");
+
+const imgProduct = document.querySelector(".item__img");
+
+
+const colorsProduct = document.getElementById("colors");
+
+const addCartBtn = document.getElementById("addToCart");  // On récupère l'élément sur lequel on veut détecter le clic
+
+const idQuantity = document.getElementById("quantity");
+
+
+
+
+function fetchProduit() {
+    fetch("http://localhost:3000/api/products/" + idProduct) // Récupère les Détails du produit sélectionné
         .then(function (res) {
             if (res.ok)
                 return res.json();
         })
-        .then(function(canapeDatas) {
-            console.log(canapeDatas);
-            
+        .then(function (productDetail) {
+            console.log(productDetail);
 
-            let product;
 
-            for (var canape of canapeDatas) {
-                if(canape._id == idParametre){
-                    product=canape;
-                }
-            }
+            //Introduit les éléments dans le DOM
 
-            console.log(products);
+            titleProduct.innerText = productDetail.name;
+            descriptionProduct.innerText = productDetail.description;
+            priceProduct.innerText = productDetail.price;
+            const img = document.createElement("img");
+            imgProduct.append(img);
+            img.src = productDetail.imageUrl;
+            img.alt = productDetail.altTxt;
 
-            document.getElementById("title").innerText = product.name;
-        }).catch(function(error){
+            for (let i of productDetail.colors) { // parcours les couleurs dans la liste de couleur
+                let colorsOption = document.createElement("option");
+                colorsOption.value = i;             // Créer l'attribut value dans la balise option et lui indique la valeur de i
+                colorsOption.innerText = i;          // Indique la valeur de i avec ça valeur string.
+                colorsProduct.append(colorsOption);  // créer une balise option qui est insérée dans la balise select
+            };
+
+
+            addCartBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                const cartId = idProduct + "_" + colorsProduct.value;
+
+                console.log(cartId);
+                console.log(idQuantity.value)
+                
+                addCart(cartId,Number(idQuantity.value));
+                
+
+            })
+
+
+
+
+        }).catch(function (error) {
             console.log(error);
         });
-};
+}
 
 
-fetchCanap();
+fetchProduit();
+
+
+
+
+
+
+// ---------------------------------------Ajouter un article au panier-------------------------------------------
