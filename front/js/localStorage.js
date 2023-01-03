@@ -20,8 +20,6 @@ function getCart() {
 
 /* 
  Ajouter un produit dans le panier
- On récupère ce que le panier contient, on regarde si l'id est déjà présente, si c'est le cas quantité ++ sinon on met la 
- quantité à 1.
 */
 function addCart(_id, quantity) {
     let Cart = getCart();
@@ -38,7 +36,7 @@ function addCart(_id, quantity) {
         Cart.push(product);
 
     }
-    saveCart(Cart); // On sauvegarde le panier
+    saveCart(Cart); 
 }
 
 
