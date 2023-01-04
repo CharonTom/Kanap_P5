@@ -31,7 +31,10 @@ function addCart(_id, quantity) {
     else {
         const product = {
             id: _id,
-            quantity: quantity
+            quantity: quantity,
+            name: title.textContent,
+            price: price.textContent,
+            color: colors.value,
         }
         Cart.push(product);
 

@@ -17,6 +17,7 @@ const idQuantity = document.getElementById("quantity");
 
 
 
+
 function fetchProduit() {
     fetch("http://localhost:3000/api/products/" + idProduct) // Récupère les Détails du produit sélectionné
         .then(function (res) {
@@ -27,7 +28,7 @@ function fetchProduit() {
             console.log(productDetail);
 
 
-            //---------Introduit les éléments dans le DOM-----------
+            //-------------------------------------Introduit les éléments dans le DOM-------------------------------------
 
 
             titleProduct.innerText = productDetail.name;
@@ -44,6 +45,11 @@ function fetchProduit() {
                 colorsOption.innerText = i;          // Indique la valeur de i avec ça valeur string.
                 colorsProduct.append(colorsOption);  // créer une balise option qui est insérée dans la balise select
             };
+
+
+
+            //---------------------------------Parametrage du bouton Ajouter --------------------------------
+
 
 
             addCartBtn.addEventListener('click', function (e) {

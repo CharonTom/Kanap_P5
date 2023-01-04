@@ -5,12 +5,5 @@ if (Cart === null || Cart == 0) {
     document.querySelector("h1").innerText =
         "Votre panier est vide !"
 } else {
-    console.log(Cart);
+    console.log(Cart);  
 }
-
-
-
-
-
-
-
