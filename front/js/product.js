@@ -14,6 +14,8 @@ const colorsProduct = document.getElementById("colors");
 const addCartBtn = document.getElementById("addToCart");
 const idQuantity = document.getElementById("quantity");
 
+let imgurl, alttxt;
+
 
 
 
@@ -38,6 +40,8 @@ function fetchProduit() {
             imgProduct.append(img);
             img.src = productDetail.imageUrl;
             img.alt = productDetail.altTxt;
+            imgurl = productDetail.imageUrl;
+            alttxt = productDetail.altTxt;
 
             for (let i of productDetail.colors) {    // parcours les couleurs dans la liste de couleur
                 let colorsOption = document.createElement("option");

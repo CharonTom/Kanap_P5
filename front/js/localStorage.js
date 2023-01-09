@@ -9,21 +9,23 @@ function saveCart(Cart) {
 
 function getCart() {
     let Cart = localStorage.getItem("MyKanapCart");
+
     if (Cart == null) {
         return [];
     }
     else {
-        return JSON.parse(Cart)
+        return JSON.parse(Cart);
     }
 }
-
 
 /* 
  Ajouter un produit dans le panier
 */
 function addCart(_id, quantity) {
     let Cart = getCart();
-    const Index = Cart.findIndex(p => p.id === _id);
+    const Index = Cart.findIndex(
+        p => p.id === _id
+    );
     if (Index !== -1) {
         Cart[Index].quantity += quantity;
 
@@ -35,9 +37,10 @@ function addCart(_id, quantity) {
             name: title.textContent,
             price: price.textContent,
             color: colors.value,
+            imgurl: imgurl,
+            alttxt: alttxt
         }
         Cart.push(product);
-
     }
     saveCart(Cart); // On sauvegarde le panier
 }
@@ -55,7 +58,9 @@ function removeFromCart(_id) {
 
 function changeQuantity(_id, quantity) {
     let Cart = getCart();
-    let foundProduct = Cart.find(p => p.id == _id);
+    let foundProduct = Cart.find(
+        p => p.id == _id
+    );
     if (foundProduct != undefined) {
         foundProduct.quantity += quantity;
         if (foundProduct.quantity <= 0) {
@@ -70,22 +75,26 @@ function changeQuantity(_id, quantity) {
 // La somme des articles
 
 function getNumberProduct() {
+    const totalQuantity = document.getElementById('totalQuantity');
     let Cart = getCart();
     let number = 0;
     for (let product of Cart) {
         number += product.quantity;
     }
-    return number;
+    totalQuantity.textContent = number;
+
 }
 
 // La somme des prix
 
 function getTotalPrice() {
+    const totalPrice = document.getElementById('totalPrice');
     let Cart = getCart();
     let total = 0;
     for (let product of Cart) {
         total += product.quantity * product.price;
     }
+    totalPrice.textContent = total;
     return total
 }
 
