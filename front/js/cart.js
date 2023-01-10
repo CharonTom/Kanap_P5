@@ -1,11 +1,10 @@
  
 
-const Cart = [];
-const basket = JSON.parse(localStorage.getItem("MyKanapCart"));
+const Cart = [];                                                // Créer un tableau vide "Cart"
+const basket = JSON.parse(localStorage.getItem("MyKanapCart")); // Créer une variable basket qui récupère les données du Local Storage
 console.log(basket);
 let idBasket;
 let qttBasket;
-
 
 if (basket === null || basket == 0) {
     alert('votre panier est vide, veuillez sélectionner vos produits dans la page d\'acceuil');
@@ -15,18 +14,21 @@ if (basket === null || basket == 0) {
 
 else {
 
-
   let BuildDomHTML = [];
  
   for (i = 0; i < basket.length; i++) {
-  Cart.push(basket[i]);
+  Cart.push(basket[i]);                   // Les valeurs du local Storage sont parcourus et poussé dans le tableau "Cart", cela me servivra pour le formulaire
+
   idBasket = basket[i].id;
   qttBasket = basket[i].quantity;
 
+
+  //-------------------------------------Construction du DOM---------------------------------------
+  // Un article est construit pour chaque tour de boucle jusqu'à ce que tout les produits ai été parcourus
  
   BuildDomHTML = BuildDomHTML + `
     
-    <article class="cart__item" data-id="${basket[i].id}" data-color="${basket.color}">
+    <article class="cart__item" data-id="${basket[i].id}" data-color="${basket[i].color}">
     <div class="cart__item__img">
       <img src="${basket[i].imgurl}" alt="${basket[i].alttxt}">
     </div>
@@ -51,7 +53,7 @@ else {
   
   }
 
-  if (i === basket.length) {   
+  if (i === basket.length) {                                    // Quand i à parcourus tout le panier, le DOM construit est injecté dans la page à l'endroit voulu
   const cart_items = document.getElementById('cart__items');
   cart_items.innerHTML += BuildDomHTML;
   }
@@ -61,14 +63,14 @@ else {
 }
 
 
-// ----------------------- Obtenir le nombre de produit et afficher le prix total -----------------
+// ------------------------------ Obtenir le nombre de produit et afficher le prix total -----------------------------------
 
 getNumberProduct();
 getTotalPrice();
 
 
 
-//------------------------------Option Remove-----------------------------
+//------------------------------------------Option Remove-----------------------------------
 
 const selectSupprimer = document.querySelectorAll(".deleteItem");
 
@@ -82,7 +84,7 @@ window.location.href = "cart.html";
 
 });
 }
-//--------------------------Option ChangeQuantity---------------------
+//-----------------------------------------Option ChangeQuantity-----------------------------
 
 const selectQuantity = document.querySelectorAll(".itemQuantity");
 

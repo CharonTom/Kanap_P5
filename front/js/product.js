@@ -1,10 +1,15 @@
+
+//---------------------- Je récupère l'id du produit séléctionné à partir de l'Url de ma page---------------------
+
+
 const url = new URL(window.location.href);      //  Créer une variable qui récupere l'URL courante.
 
-const idProduct = url.searchParams.get("id");   // Créer une variable qui récupere l'id de l'URL
-console.log(idProduct);                       // Affiche cette varaible
+const idProduct = url.searchParams.get("id");   // Je récupere l'id de mon produit par l'URL
+console.log(idProduct);
 
 
-//-----------------------Recupère les Sélecteurs----------------------
+
+//---------------------------------Je récupère les Sélecteurs------------------------------------
 
 const titleProduct = document.getElementById("title");
 const priceProduct = document.getElementById("price");
@@ -17,7 +22,7 @@ const idQuantity = document.getElementById("quantity");
 let imgurl, alttxt;
 
 
-
+//---------------------------Je rappel l'API en spécifiant cette fois ci le produit concerné ------------------------------
 
 
 function fetchProduit() {
@@ -45,20 +50,20 @@ function fetchProduit() {
 
             for (let i of productDetail.colors) {    // parcours les couleurs dans la liste de couleur
                 let colorsOption = document.createElement("option");
-                colorsOption.value = i;              // Créer l'attribut value dans la balise option et lui indique la valeur de i
+                colorsOption.value = i;              // Créer l'attribut value dans la balise html 'option' et lui indique la valeur de i
                 colorsOption.innerText = i;          // Indique la valeur de i avec ça valeur string.
-                colorsProduct.append(colorsOption);  // créer une balise option qui est insérée dans la balise select
+                colorsProduct.append(colorsOption);  // Insère la balise option dans la balise select
             };
 
 
 
             //---------------------------------Parametrage du bouton Ajouter --------------------------------
 
-
+            // je configure un eventListener quand l'utilisateur clique sur ajouter au panier
 
             addCartBtn.addEventListener('click', function (e) {
                 e.preventDefault();
-                const cartId = idProduct + "_" + colorsProduct.value;
+                const cartId = idProduct + "_" + colorsProduct.value; // je personnalise l' id de chaque produit en y ajoutant sa couleur afin de me facilité la manipulation des mes id
 
                 if (colorsProduct.value === "") {
                     alert('Veuillez selectionner une couleur');
@@ -67,15 +72,12 @@ function fetchProduit() {
                     if (Number(idQuantity.value) <= 0 || Number(idQuantity.value) > 100) {
                         alert('Veuillez selectionner une valeur entre 0 et 100');
                     } else {
-                        addCart(cartId, Number(idQuantity.value));
+                        addCart(cartId, Number(idQuantity.value));   // Appel la fonction ""Ajouter au panier"
 
                         alert(" Le canapé " + productDetail.name + " de couleur " + colorsProduct.value + " a été ajouté " + idQuantity.value + " fois dans le panier ")
                     }
                 }
             })
-
-
-
 
         }).catch(function (error) {
             console.log(error);
