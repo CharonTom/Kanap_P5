@@ -141,10 +141,30 @@ selectQuantity[k].addEventListener('change' , function (e) {
 
 
 
-//--------------------------------récupérer les selecteurs----------------------------------------------------------
 
-    
+//-------------------------------------------------------Gestion du formulaire----------------------------------------------------------
 
+//Je récupère les sélecteurs du Formulaire
+
+const firstName = document.getElementById("firstName");
+const lastName = document.getElementById("lastName");
+const address = document.getElementById("address");
+const city = document.getElementById("city");
+const email = document.getElementById("email");
+
+
+// Récupération des messages d'erreur
+
+const firstNameError = document.getElementById("firstNameErrorMsg");
+const lastNameError = document.getElementById("lastNameErrorMsg");
+const addressError = document.getElementById("addressErrorMsg");
+const cityError = document.getElementById("cityErrorMsg");
+const emailError = document.getElementById("emailErrorMsg");
+
+
+// Récupération du bouton de confirmation
+
+const confirm = document.getElementById("order");
 
 
 
