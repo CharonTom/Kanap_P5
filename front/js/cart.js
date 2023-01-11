@@ -1,32 +1,25 @@
- 
-
-const Cart = [];                                                // Créer un tableau vide "Cart"
 const basket = JSON.parse(localStorage.getItem("MyKanapCart")); // Créer une variable basket qui récupère les données du Local Storage
 console.log(basket);
-let idBasket;
-let qttBasket;
+
 
 if (basket === null || basket == 0) {
-    alert('votre panier est vide, veuillez sélectionner vos produits dans la page d\'acceuil');
-    document.querySelector("h1").innerText =
-        "Votre panier est vide !";
+  alert('votre panier est vide, veuillez sélectionner vos produits dans la page d\'acceuil');
+  document.querySelector("h1").innerText =
+    "Votre panier est vide !";
 }
 
 else {
 
   let BuildDomHTML = [];
- 
+  const cart_items = document.getElementById('cart__items');
+  cart_items.innerHTML = '';
   for (i = 0; i < basket.length; i++) {
-  Cart.push(basket[i]);                   // Les valeurs du local Storage sont parcourus et poussé dans le tableau "Cart", cela me servivra pour le formulaire
-
-  idBasket = basket[i].id;
-  qttBasket = basket[i].quantity;
 
 
-  //-------------------------------------Construction du DOM---------------------------------------
-  // Un article est construit pour chaque tour de boucle jusqu'à ce que tout les produits ai été parcourus
- 
-  BuildDomHTML = BuildDomHTML + `
+    //-------------------------------------Construction du DOM---------------------------------------
+    // Un article est construit pour chaque tour de boucle jusqu'à ce que tout les produits ai été parcourus
+
+    BuildDomHTML = BuildDomHTML + `
     
     <article class="cart__item" data-id="${basket[i].id}" data-color="${basket[i].color}">
     <div class="cart__item__img">
@@ -50,17 +43,12 @@ else {
     </div>
   </article>
     `;
-  
+
   }
 
-  if (i === basket.length) {                                    // Quand i à parcourus tout le panier, le DOM construit est injecté dans la page à l'endroit voulu
-  const cart_items = document.getElementById('cart__items');
   cart_items.innerHTML += BuildDomHTML;
-  }
-
-
-  
 }
+
 
 
 // ------------------------------ Obtenir le nombre de produit et afficher le prix total -----------------------------------
@@ -75,27 +63,49 @@ getTotalPrice();
 const selectSupprimer = document.querySelectorAll(".deleteItem");
 
 for (let k = 0; k < selectSupprimer.length; k++) {
-selectSupprimer[k].addEventListener('click' , function (e) {
-e.preventDefault();
+  selectSupprimer[k].addEventListener('click', function (e) {
+    e.preventDefault();
 
-//alert('element supprimé')
-removeFromCart(idBasket);
-window.location.href = "cart.html";
 
-});
+
+    //alert('element supprimé')
+    removeFromCart(e.target.closest('article').dataset.id);
+    window.location.href = "cart.html";
+
+    getNumberProduct();
+    getTotalPrice();
+
+  });
 }
 //-----------------------------------------Option ChangeQuantity-----------------------------
 
 const selectQuantity = document.querySelectorAll(".itemQuantity");
 
 for (let k = 0; k < selectQuantity.length; k++) {
-selectQuantity[k].addEventListener('change' , function (e) {
-  e.preventDefault();
-  //alert('cooucou');
-  
-  changeQuantity(idBasket,qttBasket);
-  
-  });}
+  selectQuantity[k].addEventListener('change', function (e) {
+    e.preventDefault();
+    //alert('cooucou');
+    let value = parseInt(e.target.value);
+
+    if (value < 1 || value > 100) {
+      alert('Veuillez sélectionner une valeur entre 1 et 100');
+      value = parseInt(e.target.defaultValue)
+    }
+
+    changeQuantity(e.target.closest('article').dataset.id, value, false);
+    getNumberProduct();
+    getTotalPrice();
+
+
+  });
+}
+
+
+
+
+
+
+
 
 
 
@@ -104,40 +114,40 @@ selectQuantity[k].addEventListener('change' , function (e) {
 
 //function BuiltCartDOM(imageUrl, altTxt, name , color, price) {
 
-   /*  let article = document.createElement("article");
-    article.classList.add('cart__item');
+/*  let article = document.createElement("article");
+ article.classList.add('cart__item');
 
-    let divImg = document.createElement("div");
-    divImg.classList.add('cart__item__img');
+ let divImg = document.createElement("div");
+ divImg.classList.add('cart__item__img');
 
-    let img = document.createElement("img");
-    img.src = imageUrl;
-    img.alt = altTxt;
+ let img = document.createElement("img");
+ img.src = imageUrl;
+ img.alt = altTxt;
 
-    let divContent = document.createElement("div");
-    divContent.classList.add('cart__item__content');
+ let divContent = document.createElement("div");
+ divContent.classList.add('cart__item__content');
 
-    let divContentD = document.createElement("div");
-    divContentD.classList.add('cart__item__content__description');
+ let divContentD = document.createElement("div");
+ divContentD.classList.add('cart__item__content__description');
 
-    let h2 = document.createElement("h2");
-    h2.textContent = name;                       
+ let h2 = document.createElement("h2");
+ h2.textContent = name;                       
 
-    let p1 = document.createElement("p");
-    p1.textContent = color;
+ let p1 = document.createElement("p");
+ p1.textContent = color;
 
-    let p2 = document.createElement("p");
-    p2.textContent = price;
+ let p2 = document.createElement("p");
+ p2.textContent = price;
 
-    let divSetting = document.createElement("div");
-    divSetting.classList.add('cart__item__content__settings');
+ let divSetting = document.createElement("div");
+ divSetting.classList.add('cart__item__content__settings');
 
-    let divDelete = document.createElement("div")
-    divDelete.classList.add("cart__item__content__settings__delete")
+ let divDelete = document.createElement("div")
+ divDelete.classList.add("cart__item__content__settings__delete")
 
-                                 
-    
-    return article; };  */
+                              
+ 
+ return article; };  */
 
 
 
@@ -167,5 +177,9 @@ const emailError = document.getElementById("emailErrorMsg");
 const confirm = document.getElementById("order");
 
 
+// Setting fistName
 
+firstName.addEventListener('input', (e) => {
+
+})
 

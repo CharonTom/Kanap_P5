@@ -20,18 +20,18 @@ function getCart() {
 }
 
 
- //-------------------- Ajouter un produit dans le panier------------
+//-------------------- Ajouter un produit dans le panier------------
 
 
 function addCart(_id, quantity) {
     let Cart = getCart();                                      // Récupère les valeurs du Local Storage et les met dans la variable Cart
     const Index = Cart.findIndex(p => p.id === _id);           // On parcours ces valeurs
-    if (Index !== -1) {                         
+    if (Index !== -1) {
         Cart[Index].quantity += quantity;                      // Si le produit ajouté existe déjà, les quantités s'additionnent
 
     }
     else {
-        const product = {                   
+        const product = {
             id: _id,
             quantity: quantity,
             name: title.textContent,
@@ -58,13 +58,18 @@ function removeFromCart(_id) {
 
 //------------------------------------ Change la quantité d'un produit----------------------------------
 
-function changeQuantity(_id, quantity) {
+function changeQuantity(_id, quantity, isAddition = true) {
     let Cart = getCart();
     let foundProduct = Cart.find(
         p => p.id == _id
     );
     if (foundProduct != undefined) {
-        foundProduct.quantity += quantity;
+        if (!isAddition) {
+            foundProduct.quantity = quantity;
+        } else {
+            foundProduct.quantity += quantity;
+        }
+
         if (foundProduct.quantity <= 0) {
             removeFromCart(foundProduct);
         }
