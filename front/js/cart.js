@@ -1,5 +1,8 @@
+
+
+
 const basket = JSON.parse(localStorage.getItem("MyKanapCart")); // Créer une variable basket qui récupère les données du Local Storage
-console.log(basket);
+
 
 
 if (basket === null || basket == 0) {
@@ -163,6 +166,7 @@ const city = document.getElementById("city");
 const email = document.getElementById("email");
 
 
+
 // Récupération des messages d'erreur
 
 const firstNameError = document.getElementById("firstNameErrorMsg");
@@ -177,9 +181,111 @@ const emailError = document.getElementById("emailErrorMsg");
 const confirm = document.getElementById("order");
 
 
-// Setting fistName
+// Setting firstName
+
+const regexName = /^[^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>,;:[\]]{3,20}$/;
+const regexAdress = /^[0-9]{1,3} [a-z A-Z éèàùâôûîê-]{3,35}$/;
+const regexCity = /^[^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{3,20}$/;
+const regexMail = /^[a-z0-9._-éèàùâôûîê]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$/;
 
 firstName.addEventListener('input', (e) => {
-
+  
+  if (e.target.value.match(regexName)){
+    firstNameError.innerHTML = "";
+  } else {
+    firstNameError.innerHTML = "Le prénom doit avoir entre 3 et 20 caractères. Sans caractères spéciaux ni chiffres. Les tirets et accents sont acceptés";
+  } 
 })
 
+
+// Setting Name
+
+lastName.addEventListener('input', (e) => {
+  
+
+  if (e.target.value.match(regexName)){
+    lastNameError.innerHTML = "";
+  } else {
+    lastNameError.innerHTML = "Le nom doit avoir entre 3 et 20 caractères. Sans caractères spéciaux ni chiffres. Les tirets et accents sont acceptés";
+  } 
+})
+
+
+// Setting adress
+
+
+address.addEventListener('input', (e) => {
+  
+
+  if (e.target.value.match(regexAdress)){
+    addressError.innerHTML = "";
+  } else {
+    addressError.innerHTML = "l'adresse doit commencer par un chiffre (maximum 3)";
+  } 
+})
+
+
+// Setting City
+
+city.addEventListener('input', (e) => {
+  
+
+  if (e.target.value.match(regexCity)){
+    cityError.innerHTML = "";
+  } else {
+    cityError.innerHTML = "La ville doit avoir entre 3 et 20 caractères. Sans caractères spéciaux ni chiffres. Les tirets et accents sont acceptés";
+  } 
+})
+
+
+// Setting Email
+
+email.addEventListener('input', (e) => {
+  
+
+  if (e.target.value.match(regexMail)){
+    emailError.innerHTML = "";
+  } else {
+    emailError.innerHTML = "Le format de l'adresse mail n'est pas valide";
+  } 
+})
+
+
+
+// je récupère les données du formulaire dans un objet
+
+
+
+
+order.addEventListener('click', (event) => {
+  event.preventDefault();
+
+
+const formData = {
+  firstNameData : firstName.value,
+  lastNameData : lastName.value,
+  addressData : address.value,
+  cityData : city.value,
+  emailData : email.value
+}
+
+//Je stock les données du formulaire au format JSON dans l' objet formData
+
+localStorage.setItem('formData' , JSON.stringify(formData));
+
+
+
+
+// Je récupère les données du formulaire ET du panier dans le même objet
+// Je pourrais directement l'envoyer au serveur
+
+const Basket_And_FormData = {
+
+  basket,
+  formData
+
+}
+
+
+
+});

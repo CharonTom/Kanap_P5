@@ -69,8 +69,8 @@ function fetchProduit() {
                     alert('Veuillez selectionner une couleur');
                 } else {
 
-                    if (Number(idQuantity.value) <= 0 || Number(idQuantity.value) > 100) {
-                        alert('Veuillez selectionner une valeur entre 0 et 100');
+                    if (Number(idQuantity.value) < 1 || Number(idQuantity.value) > 100) {
+                        alert('Veuillez selectionner une valeur entre 1 et 100');
                     } else {
                         addCart(cartId, Number(idQuantity.value));   // Appel la fonction ""Ajouter au panier"
 
