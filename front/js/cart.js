@@ -1,4 +1,6 @@
+let products = [];
 const basket = JSON.parse(localStorage.getItem("MyKanapCart")); // Créer une variable basket qui récupère les données du Local Storage
+
 
 if (basket === null || basket == 0) {
   alert('votre panier est vide, veuillez sélectionner vos produits dans la page d\'acceuil');
@@ -12,6 +14,10 @@ else {
   const cart_items = document.getElementById('cart__items');
   cart_items.innerHTML = '';
   for (i = 0; i < basket.length; i++) {
+
+    const ID = basket[i].id.split("_")[0]  // Je sépare l'id de la couleur et injecte l'id dans un tableau "product"          
+    products.push(ID);                     // Le tableau products qui contient les id est indispensable pour l'envoie du formulaire au serveur
+
 
 
     //-------------------------------------Construction du DOM---------------------------------------
@@ -47,7 +53,6 @@ else {
 }
 
 
-
 // ------------------------------ Obtenir le nombre de produit et afficher le prix total -----------------------------------
 
 getNumberProduct();
@@ -61,10 +66,8 @@ for (let k = 0; k < selectSupprimer.length; k++) {
   selectSupprimer[k].addEventListener('click', function (e) {
     e.preventDefault();
 
-
-
-    //alert('element supprimé')
     removeFromCart(e.target.closest('article').dataset.id);
+    alert('L\'article a été supprimé du panier');
     window.location.href = "cart.html";
 
     getNumberProduct();
@@ -93,8 +96,6 @@ for (let k = 0; k < selectQuantity.length; k++) {
 
   });
 }
-
-
 
 //-------------------------------------------------------Gestion du formulaire----------------------------------------------------------
 
@@ -198,21 +199,42 @@ order.addEventListener('click', (event) => {
       //Je stock les données saisie par l'utilisateur dans un objet
       //Je les enregistre dans le Local Storage au format JSON
 
-      const formData = {
-        firstNameData: firstName.value,
-        lastNameData: lastName.value,
-        addressData: address.value,
-        cityData: city.value,
-        emailData: email.value
+      const contact = {
+        firstName: firstName.value,
+        lastName: lastName.value,
+        address: address.value,
+        city: city.value,
+        email: email.value
       }
-      localStorage.setItem('formData', JSON.stringify(formData));
 
-      // Je récupère les données du formulaire ET du panier dans le même objet
+      // Je récupère les données du formulaire et les id de mes articles dans le même objet
 
-      const Basket_And_FormData = {
-        basket,
-        formData
+      const order = {
+        contact,
+        products
       }
+
+      // J'envoie la commande et le formulaire regrouper dans le même objet dans le localStorage
+
+      localStorage.setItem('order', JSON.stringify(order));
+
+      // Envoyer les données sur le serveur avec une requête POST
+
+      const options = {
+        method: 'POST',
+        body: JSON.stringify(order),
+        headers: {
+          'Accept': 'application/json',
+          "Content-Type": "application/json"
+        },
+      };
+      fetch("http://localhost:3000/api/products/order", options)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          localStorage.clear();
+          localStorage.setItem("orderId", data.orderId);
+        })
 
     } else {
       alert('Veuillez revérifier les informations saisie dans le formulaire')
