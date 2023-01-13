@@ -1,4 +1,4 @@
-//----------------------------------------- Appel de l' API qui conteint les produits -------------------------------
+//----------------------------------------- Appel de l' API qui contient les produits -------------------------------
 
 function fetchCanap() {
     fetch("http://localhost:3000/api/products")
@@ -9,12 +9,12 @@ function fetchCanap() {
         .then(function (products) {
             console.log(products);  // Affiche le contenant de l'API dans la console
 
-            const items = document.getElementById("items"); // Je récupère l'endroit ou je vais implémenter mon DOM
-            
-// Je parcours la liste des produits est je créé une variable qui appelle la fonction "buildProductDOM" construite plus bas.
-// J'intègre les produits dans le DOM que j'a construit, et je l'implémente à l'endroit du DOM voulu.
+            const items = document.getElementById("items"); // Je récupère l'endroit où je vais implémenter mon DOM
 
-            for (let product of products) { 
+            // Je parcours la liste des produits est je créé une variable qui appelle la fonction "buildProductDOM" construite plus bas.
+            // J'intègre les produits que j'ai construit, et je l'implémente à l'endroit du DOM voulu.
+
+            for (let product of products) {
                 let productDOM = buildProductDOM(product._id, product.name, product.description, product.imageUrl, product.altTxt);
                 items.append(productDOM);
             }
@@ -30,7 +30,7 @@ function fetchCanap() {
 function buildProductDOM(id, name, description, imageUrl, altTxt) {
 
     let a = document.createElement("a");
-    a.href = "./product.html?id=" + id;        // créer une balise a et Indique le lien dans cette balise
+    a.href = "./product.html?id=" + id;        // créer une balise a avec son lien de redirection
 
     let article = document.createElement("article");     // Créer une balise article
 
@@ -40,11 +40,11 @@ function buildProductDOM(id, name, description, imageUrl, altTxt) {
 
     let h3 = document.createElement("h3");
     h3.classList.add('productName');
-    h3.textContent = name;                      // Créer une balise h3 avec une classe dedans, et ajoute un titre
+    h3.textContent = name;                      // Créer une balise h3 avec une classe dedans et ajoute un titre
 
     let p = document.createElement("p");
     p.classList.add('productDescription');
-    p.textContent = description;                // Créer une balise P avec une classe dedans, et ajoute un text de description   
+    p.textContent = description;                // Créer une balise P avec une classe dedans, et ajoute un texte de description   
 
     article.append(img);
     article.append(h3);

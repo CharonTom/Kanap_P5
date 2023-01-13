@@ -3,7 +3,7 @@ const basket = JSON.parse(localStorage.getItem("MyKanapCart")); // Créer une va
 
 
 if (basket === null || basket == 0) {
-  alert('votre panier est vide, veuillez sélectionner vos produits dans la page d\'acceuil');
+  alert('Votre panier est vide, veuillez sélectionner vos produits dans la page d\'acceuil');
   document.querySelector("h1").innerText =
     "Votre panier est vide !";
 }
@@ -15,13 +15,13 @@ else {
   cart_items.innerHTML = '';
   for (i = 0; i < basket.length; i++) {
 
-    const ID = basket[i].id.split("_")[0]  // Je sépare l'id de la couleur et injecte l'id dans un tableau "product"          
-    products.push(ID);                     // Le tableau products qui contient les id est indispensable pour l'envoie du formulaire au serveur
+    const ID = basket[i].id.split("_")[0]  // Je sépare l'id de la couleur et injecte l'id dans un tableau "products"          
+    products.push(ID);                     // Le tableau products qui contient les id est indispensable pour l'envoi du formulaire au serveur
 
 
 
-    //-------------------------------------Construction du DOM---------------------------------------
-    // Un article est construit pour chaque tour de boucle jusqu'à ce que tout les produits ai été parcourus
+    //---------------------------------------------Construction du DOM-----------------------------------------------------
+    // Un article est construit pour chaque tour de boucle jusqu'à ce que tous les produits ont été parcouru
 
     BuildDomHTML = BuildDomHTML + `
     
@@ -99,7 +99,7 @@ for (let k = 0; k < selectQuantity.length; k++) {
 
 //-------------------------------------------------------Gestion du formulaire----------------------------------------------------------
 
-//Je récupère les sélecteurs du Formulaire
+// Je récupère les sélecteurs du Formulaire
 
 const firstName = document.getElementById("firstName");
 const lastName = document.getElementById("lastName");
@@ -119,6 +119,7 @@ const emailError = document.getElementById("emailErrorMsg");
 // Récupération du bouton de confirmation
 
 const confirm = document.getElementById("order");
+
 
 // -------------------------------Validation des champs du formulaire-------------------------------------------------
 
@@ -183,7 +184,7 @@ email.addEventListener('input', (e) => {
 })
 
 
-//------------------------------------Configuration du bouton commander ---------------------------------------------------
+//--------------------------------------------Configuration du bouton commander ---------------------------------------------------
 
 
 order.addEventListener('click', (event) => {
@@ -196,8 +197,8 @@ order.addEventListener('click', (event) => {
     if (regexName.test(firstName.value) && regexName.test(lastName.value) && regexCity.test(city.value) && regexAdress.test(address.value) && regexMail.test(email.value) == true) {
 
 
-      //Je stock les données saisie par l'utilisateur dans un objet
-      //Je les enregistre dans le Local Storage au format JSON
+      // Je stock les données saisie par l'utilisateur dans un objet
+      // Je les enregistre dans le Local Storage au format JSON
 
       const contact = {
         firstName: firstName.value,
@@ -214,7 +215,7 @@ order.addEventListener('click', (event) => {
         products
       }
 
-      // J'envoie la commande et le formulaire regrouper dans le même objet dans le localStorage
+      // J'envoie la commande et le formulaire regroupés dans le même objet dans le localStorage
 
       localStorage.setItem('order', JSON.stringify(order));
 

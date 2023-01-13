@@ -26,7 +26,7 @@ let imgurl, alttxt;
 
 
 function fetchProduit() {
-    fetch("http://localhost:3000/api/products/" + idProduct) // Récupère les Détails du produit sélectionné
+    fetch("http://localhost:3000/api/products/" + idProduct) // Récupère les détails du produit sélectionné
         .then(function (res) {
             if (res.ok)
                 return res.json();
@@ -63,16 +63,16 @@ function fetchProduit() {
 
             addCartBtn.addEventListener('click', function (e) {
                 e.preventDefault();
-                const cartId = idProduct + "_" + colorsProduct.value; // je personnalise l' id de chaque produit en y ajoutant sa couleur afin de me facilité la manipulation des mes id
+                const cartId = idProduct + "_" + colorsProduct.value; // je personnalise l' id de chaque produit en y ajoutant sa couleur afin de me faciliter la manipulation des mes id
 
                 if (colorsProduct.value === "") {
-                    alert('Veuillez selectionner une couleur');
+                    alert('Veuillez sélectionner une couleur');
                 } else {
 
                     if (Number(idQuantity.value) < 1 || Number(idQuantity.value) > 100) {
-                        alert('Veuillez selectionner une valeur entre 1 et 100');
+                        alert('Veuillez sélectionner une valeur entre 1 et 100');
                     } else {
-                        addCart(cartId, Number(idQuantity.value));   // Appel la fonction ""Ajouter au panier"
+                        addCart(cartId, Number(idQuantity.value));   // Appel la fonction "Ajouter au panier"
 
                         alert(" Le canapé " + productDetail.name + " de couleur " + colorsProduct.value + " a été ajouté " + idQuantity.value + " fois dans le panier ")
                     }
