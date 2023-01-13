@@ -234,8 +234,8 @@ order.addEventListener('click', (event) => {
           console.log(data);
           localStorage.clear();
           localStorage.setItem("orderId", data.orderId);
+          document.location.href = 'confirmation.html?id=' + data.orderId;
         })
-
     } else {
       alert('Veuillez revérifier les informations saisie dans le formulaire')
     }
