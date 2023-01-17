@@ -20,8 +20,7 @@ function getCart() {
 }
 
 
-//-------------------- Ajouter un produit dans le panier------------
-
+//--------------------------------------- Ajouter un produit dans le panier-----------------------------
 
 function addCart(_id, quantity) {
     let Cart = getCart();                                      // Récupère les valeurs du Local Storage et les met dans la variable Cart
@@ -58,18 +57,13 @@ function removeFromCart(_id) {
 
 //------------------------------------ Change la quantité d'un produit----------------------------------
 
-function changeQuantity(_id, quantity, isAddition = true) {
+function changeQuantity(_id, quantity) {
     let Cart = getCart();
     let foundProduct = Cart.find(
         p => p.id == _id
     );
     if (foundProduct != undefined) {
-        if (!isAddition) {
-            foundProduct.quantity = quantity;
-        } else {
-            foundProduct.quantity += quantity;
-        }
-
+        foundProduct.quantity = quantity;
         if (foundProduct.quantity <= 0) {
             removeFromCart(foundProduct);
         }
@@ -79,18 +73,19 @@ function changeQuantity(_id, quantity, isAddition = true) {
     }
 }
 
+//---------------------------Récupérer la quantité d'un article dans le local storage-----------------------------------
+// Cette fonction permet de récupérer la quantité d'un id du local storage lorsque elle est appellée.
+
 function getQuantity(_id) {
     let Cart = getCart();
     let foundProduct = Cart.find(
         p => p.id == _id
     );
     if (foundProduct != undefined) {
-        return foundProduct.quantity;
+        return foundProduct.quantity; // Si l'id est dans le local storage je retourne sa quantité
     }
     return -1;
 }
-
-
 
 //------------------------------------- La somme des articles----------------------------------
 // La fonction getNumberProduct relève la quantité de produits dans le localStorage et les affiches dans la page Panier
@@ -100,10 +95,9 @@ function getNumberProduct() {
     let Cart = getCart();
     let number = 0;
     for (let product of Cart) {
-        number += product.quantity;
+        number += product.quantity;      // je récupère la quantité de produit sous la forme d'un nombre
     }
-    totalQuantity.textContent = number;
-
+    totalQuantity.textContent = number;  // j'affiche ce nombre à l'endroit voulu
 }
 
 //----------------------------------- La somme des prix-----------------------------
@@ -114,9 +108,7 @@ function getTotalPrice() {
     let Cart = getCart();
     let total = 0;
     for (let product of Cart) {
-        total += product.quantity * product.price;
+        total += product.quantity * product.price; // c'est la même fonction mais les produits sont multipliés par leur prix
     }
     totalPrice.textContent = total;
 }
-
-

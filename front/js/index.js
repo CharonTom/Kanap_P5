@@ -18,41 +18,36 @@ function fetchCanap() {
                 let productDOM = buildProductDOM(product._id, product.name, product.description, product.imageUrl, product.altTxt);
                 items.append(productDOM);
             }
-
         }).catch(function (error) {
             console.log(error);
         });
 }
-
 
 //-----------------------------------------Construction du DOM------------------------------------------
 
 function buildProductDOM(id, name, description, imageUrl, altTxt) {
 
     let a = document.createElement("a");
-    a.href = "./product.html?id=" + id;        // créer une balise a avec son lien de redirection
+    a.href = "./product.html?id=" + id;        // créer une balise "lien" avec un lien de redirection auquel il est ajouté l'id du produit choisit
 
     let article = document.createElement("article");     // Créer une balise article
 
     let img = document.createElement("img");
     img.src = imageUrl;
-    img.alt = altTxt;                           // Créer une balise image et indique le src et alt
+    img.alt = altTxt;                           // créer une balise image et indique le src et alt
 
     let h3 = document.createElement("h3");
     h3.classList.add('productName');
-    h3.textContent = name;                      // Créer une balise h3 avec une classe dedans et ajoute un titre
+    h3.textContent = name;                      // créer une balise h3 avec une classe dedans et ajoute un titre
 
     let p = document.createElement("p");
     p.classList.add('productDescription');
-    p.textContent = description;                // Créer une balise P avec une classe dedans, et ajoute un texte de description   
+    p.textContent = description;                // créer une balise P avec une classe dedans, et ajoute un texte de description   
 
     article.append(img);
     article.append(h3);
-    article.append(p);                          // insere les éléments img h3 et p dans la balise article
+    article.append(p);                          // insère les éléments img h3 et p dans la balise article
     a.append(article);
-    return a;                                   // récupere a, qui est la balise liens qui contient désormais l'article.
+    return a;                                   // récupère a, qui est la balise lien qui contient désormais l'article.
 }
-
-
-
 fetchCanap();

@@ -1,114 +1,112 @@
 let products = [];
-const basket = JSON.parse(localStorage.getItem("MyKanapCart")); // Créer une variable basket qui récupère les données du Local Storage
+let basket = null;
 
-
-if (basket === null || basket == 0) {
-  alert('Votre panier est vide, veuillez sélectionner vos produits dans la page d\'acceuil');
-  document.querySelector("h1").innerText =
-    "Votre panier est vide !";
-}
-
-else {
-
+function buildDom() {
+  products = [];
   let BuildDomHTML = [];
-  const cart_items = document.getElementById('cart__items');
+  const cart_items = document.getElementById('cart__items'); // Je récupère l'endroit où je souhaite implémenter mon DOM
   cart_items.innerHTML = '';
-  for (i = 0; i < basket.length; i++) {
 
-    const ID = basket[i].id.split("_")[0]  // Je sépare l'id de la couleur et injecte l'id dans un tableau "products"          
-    products.push(ID);                     // Le tableau products qui contient les id est indispensable pour l'envoi du formulaire au serveur
+  basket = JSON.parse(localStorage.getItem("MyKanapCart")); // Je récupère les informations du local storage que je met dans la variable "basket"
+  if (basket === null || basket == 0) {
+    alert('Votre panier est vide, veuillez sélectionner vos produits dans la page d\'acceuil');
+    document.querySelector("h1").innerText =
+      "Votre panier est vide !";
+  } else {
+
+    for (i = 0; i < basket.length; i++) {
+      const ID = basket[i].id.split("_")[0]  // Je sépare l'id de la couleur et injecte l'id dans un tableau "products"          
+      products.push(ID);                     // Le tableau products qui contient les id est indispensable pour l'envoi du formulaire au serveur
 
 
+      //---------------------------------------------Construction du DOM-----------------------------------------------------
+      // Un article est construit pour chaque tour de boucle jusqu'à ce que tous les produits ont été parcouru
 
-    //---------------------------------------------Construction du DOM-----------------------------------------------------
-    // Un article est construit pour chaque tour de boucle jusqu'à ce que tous les produits ont été parcouru
-
-    BuildDomHTML = BuildDomHTML + `
-    
-    <article class="cart__item" data-id="${basket[i].id}" data-color="${basket[i].color}">
-    <div class="cart__item__img">
-      <img src="${basket[i].imgurl}" alt="${basket[i].alttxt}">
-    </div>
-    <div class="cart__item__content">
-      <div class="cart__item__content__titlePrice">
-        <h2>${basket[i].name}</h2>
-        <p>${basket[i].color}</p>
-        <p>${basket[i].price} €</p>
+      BuildDomHTML = BuildDomHTML + `
+      
+      <article class="cart__item" data-id="${basket[i].id}" data-color="${basket[i].color}">
+      <div class="cart__item__img">
+        <img src="${basket[i].imgurl}" alt="${basket[i].alttxt}">
       </div>
-      <div class="cart__item__content__settings">
-        <div class="cart__item__content__settings__quantity">
-          <p>Qté : </p>
-          <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${basket[i].quantity}">
+      <div class="cart__item__content">
+        <div class="cart__item__content__titlePrice">
+          <h2>${basket[i].name}</h2>
+          <p>${basket[i].color}</p>
+          <p>${basket[i].price} €</p>
         </div>
-        <div class="cart__item__content__settings__delete">
-          <p class="deleteItem">Supprimer</p>
+        <div class="cart__item__content__settings">
+          <div class="cart__item__content__settings__quantity">
+            <p>Qté : </p>
+            <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${basket[i].quantity}">
+          </div>
+          <div class="cart__item__content__settings__delete">
+            <p class="deleteItem">Supprimer</p>
+          </div>
         </div>
       </div>
-    </div>
-  </article>
-    `
-      ;
+    </article>
+      `
+        ;
+    }
+    cart_items.innerHTML += BuildDomHTML;
   }
-  cart_items.innerHTML += BuildDomHTML;
+  getNumberProduct();
+  getTotalPrice();
+  callRemove();
+  callChangeQuantity();
 }
 
+buildDom();
 
-// ------------------------------ Obtenir le nombre de produit et afficher le prix total -----------------------------------
-
-getNumberProduct();
-getTotalPrice();
 
 //------------------------------------------Option Remove-----------------------------------
 
-const selectSupprimer = document.querySelectorAll(".deleteItem");
+function callRemove() {
+  const selectSupprimer = document.querySelectorAll(".deleteItem");  // je récupère les boutons "supprimer"
 
-for (let k = 0; k < selectSupprimer.length; k++) {
-  selectSupprimer[k].addEventListener('click', function (e) {
-    e.preventDefault();
-
-    removeFromCart(e.target.closest('article').dataset.id);
-    alert('L\'article a été supprimé du panier');
-    window.location.href = "cart.html";
-
-    getNumberProduct();
-    getTotalPrice();
-
-  });
+  for (let k = 0; k < selectSupprimer.length; k++) {
+    selectSupprimer[k].addEventListener('click', function (e) {
+      e.preventDefault();
+      removeFromCart(e.target.closest('article').dataset.id);     // j'appel la fonction removeFromCart qui prend en paramètre l'id du produit à supprimer
+      buildDom();  // Je rafraichit mon DOM
+    });
+  }
 }
 //-----------------------------------------Option ChangeQuantity-----------------------------
 
-const selectQuantity = document.querySelectorAll(".itemQuantity");
+function callChangeQuantity() {
+  const selectQuantity = document.querySelectorAll(".itemQuantity"); // je récupère les inputs de quantité
 
-for (let k = 0; k < selectQuantity.length; k++) {
-  selectQuantity[k].addEventListener('change', function (e) {
-    e.preventDefault();
-   
-    const regexInput = /^[1-9][0-9]?$|^100$/
+  for (let k = 0; k < selectQuantity.length; k++) {
+    selectQuantity[k].addEventListener('change', function (e) {
+      e.preventDefault();
 
-    if (!regexInput.test(e.target.value)) {
-      alert('Veuillez sélectionner une valeur entre 1 et 100');
-      const storeValue = getQuantity(e.target.closest('article').dataset.id);
-      const value = storeValue === -1 ? parseInt(e.target.defaultValue) : storeValue;
-      e.target.value = value;
+      const regexInput = /^[1-9][0-9]?$|^100$/    // je met une regex qui permet de contrôler les valeurs saisies
 
-    } else {
-      changeQuantity(e.target.closest('article').dataset.id, e.target.valueAsNumber, false);
-      getNumberProduct();
-      getTotalPrice();
-    }
-  });
+      if (!regexInput.test(e.target.value)) {
+        alert('Veuillez sélectionner une valeur entre 1 et 100');
+        const storeValue = getQuantity(e.target.closest('article').dataset.id);          // Récupère la quantité du produit dans le local storage
+        const value = storeValue === -1 ? parseInt(e.target.defaultValue) : storeValue;
+        e.target.value = value;                                                        // Je la réaffecte dans l'input
+
+      } else {
+        changeQuantity(e.target.closest('article').dataset.id, e.target.valueAsNumber); // je change la quantité de l'article selectionné
+        getNumberProduct();
+        getTotalPrice();        // Je recalcul la quantité et le prix total
+      }
+    });
+  }
 }
 
 //-------------------------------------------------------Gestion du formulaire----------------------------------------------------------
 
-// Je récupère les sélecteurs du Formulaire
+// Je récupère les sélecteurs du formulaire
 
 const firstName = document.getElementById("firstName");
 const lastName = document.getElementById("lastName");
 const address = document.getElementById("address");
 const city = document.getElementById("city");
 const email = document.getElementById("email");
-
 
 // Récupération des messages d'erreur
 
@@ -122,8 +120,7 @@ const emailError = document.getElementById("emailErrorMsg");
 
 const confirm = document.getElementById("order");
 
-
-// -------------------------------Validation des champs du formulaire-------------------------------------------------
+// ------------------------------------Validation des champs du formulaire-------------------------------------------------
 
 const regexName = /^[^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>,;:[\]]{3,20}$/;
 const regexAdress = /^[0-9]{1,3} [a-z A-Z éèàùâôûîê-]{3,35}$/;
@@ -197,10 +194,8 @@ order.addEventListener('click', (event) => {
 
   } else {
     if (regexName.test(firstName.value) && regexName.test(lastName.value) && regexCity.test(city.value) && regexAdress.test(address.value) && regexMail.test(email.value) == true) {
-
-
-      // Je stock les données saisie par l'utilisateur dans un objet
-      // Je les enregistre dans le Local Storage au format JSON
+      // Si tout les champs saisie sont correcte
+      // Je stock les données saisie par l'utilisateur dans un objet contact
 
       const contact = {
         firstName: firstName.value,
@@ -217,11 +212,7 @@ order.addEventListener('click', (event) => {
         products
       }
 
-      // J'envoie la commande et le formulaire regroupés dans le même objet dans le localStorage
-
-      localStorage.setItem('order', JSON.stringify(order));
-
-      // Envoyer les données sur le serveur avec une requête POST
+      // j'envoi les données sur l'api au format JSON avec une requête POST
 
       const options = {
         method: 'POST',
@@ -234,10 +225,9 @@ order.addEventListener('click', (event) => {
       fetch("http://localhost:3000/api/products/order", options)
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
-          localStorage.clear();
-          localStorage.setItem("orderId", data.orderId);
-          document.location.href = 'confirmation.html?id=' + data.orderId;
+          console.log(data); // Je récupère le numéro de commande envoyé par l'API
+          localStorage.clear(); // Je supprime tout élément du local storage
+          document.location.href = 'confirmation.html?id=' + data.orderId; // Je redirige sur la page confirmation.html et ajoute à l'url le numéro de commande
         })
     } else {
       alert('Veuillez revérifier les informations saisie dans le formulaire')
