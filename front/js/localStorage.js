@@ -79,6 +79,19 @@ function changeQuantity(_id, quantity, isAddition = true) {
     }
 }
 
+function getQuantity(_id) {
+    let Cart = getCart();
+    let foundProduct = Cart.find(
+        p => p.id == _id
+    );
+    if (foundProduct != undefined) {
+        return foundProduct.quantity;
+    }
+    return -1;
+}
+
+
+
 //------------------------------------- La somme des articles----------------------------------
 // La fonction getNumberProduct relève la quantité de produits dans le localStorage et les affiches dans la page Panier
 

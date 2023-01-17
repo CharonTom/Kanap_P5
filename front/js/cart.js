@@ -82,15 +82,17 @@ const selectQuantity = document.querySelectorAll(".itemQuantity");
 for (let k = 0; k < selectQuantity.length; k++) {
   selectQuantity[k].addEventListener('change', function (e) {
     e.preventDefault();
-    //alert('cooucou');
-    let value = parseInt(e.target.value);
+   
+    const regexInput = /^[1-9][0-9]?$|^100$/
 
-    if (value < 1 || value > 100) {
+    if (!regexInput.test(e.target.value)) {
       alert('Veuillez sélectionner une valeur entre 1 et 100');
-      value = parseInt(e.target.defaultValue)
+      const storeValue = getQuantity(e.target.closest('article').dataset.id);
+      const value = storeValue === -1 ? parseInt(e.target.defaultValue) : storeValue;
+      e.target.value = value;
 
     } else {
-      changeQuantity(e.target.closest('article').dataset.id, value, false);
+      changeQuantity(e.target.closest('article').dataset.id, e.target.valueAsNumber, false);
       getNumberProduct();
       getTotalPrice();
     }
