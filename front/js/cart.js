@@ -88,12 +88,12 @@ for (let k = 0; k < selectQuantity.length; k++) {
     if (value < 1 || value > 100) {
       alert('Veuillez sélectionner une valeur entre 1 et 100');
       value = parseInt(e.target.defaultValue)
+
+    } else {
+      changeQuantity(e.target.closest('article').dataset.id, value, false);
+      getNumberProduct();
+      getTotalPrice();
     }
-
-    changeQuantity(e.target.closest('article').dataset.id, value, false);
-    getNumberProduct();
-    getTotalPrice();
-
   });
 }
 
