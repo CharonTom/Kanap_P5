@@ -16,7 +16,7 @@ const idQuantity = document.getElementById("quantity");
 //---------------------------Je rappel l'API en spécifiant cette fois ci le produit concerné ------------------------------
 
 function fetchProduit() {
-    fetch("http://localhost:3000/api/products/" + idProduct) // Récupère les détails du produit sélectionné
+    fetch("https://p5-kanap-production.up.railway.app/api/products/" + idProduct) // Récupère les détails du produit sélectionné
         .then(function (res) {
             if (res.ok)
                 return res.json();

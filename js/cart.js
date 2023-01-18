@@ -222,7 +222,7 @@ order.addEventListener('click', (event) => {
           "Content-Type": "application/json"
         },
       };
-      fetch("http://localhost:3000/api/products/order", options)
+      fetch("https://p5-kanap-production.up.railway.app/api/products/order", options)
         .then((response) => response.json())
         .then((data) => {
           console.log(data); // Je récupère le numéro de commande envoyé par l'API

@@ -1,7 +1,7 @@
 //----------------------------------------- Appel de l' API qui contient les produits -------------------------------
 
 function fetchCanap() {
-    fetch("http://localhost:3000/api/products")
+    fetch("https://p5-kanap-production.up.railway.app/api/products")
         .then(function (res) {
             if (res.ok)
                 return res.json();
