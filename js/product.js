@@ -1,7 +1,7 @@
 //---------------------- Je récupère l'id du produit séléctionné à partir de l'Url de ma page---------------------
 
 const url = new URL(window.location.href);      //  Créer une variable qui récupere l'URL courante.
-const idProduct = url.searchParams.get("id");   // Je récupere l'id de mon produit par l'URL
+const idProduct = url.searchParams.get("id");   
 
 //---------------------------------Je récupère les Sélecteurs------------------------------------
 
@@ -13,10 +13,13 @@ const colorsProduct = document.getElementById("colors");
 const addCartBtn = document.getElementById("addToCart");
 const idQuantity = document.getElementById("quantity");
 
-//---------------------------Je rappel l'API en spécifiant cette fois ci le produit concerné ------------------------------
 
+/**
+ * Cette fonction rappel l'API en spécifiant cette fois ci le produit concerné
+ * et construit le DOM
+ */
 function fetchProduit() {
-    fetch("https://p5-kanap-production.up.railway.app/api/products/" + idProduct) // Récupère les détails du produit sélectionné
+    fetch("https://p5-kanap-production.up.railway.app/api/products/" + idProduct)
         .then(function (res) {
             if (res.ok)
                 return res.json();
@@ -41,29 +44,34 @@ function fetchProduit() {
                 colorsOption.innerText = i;          // indique la valeur de i avec ça valeur string
                 colorsProduct.append(colorsOption);  // insère la balise option dans la balise select
             };
-
-            //-----------------------------------Parametrage du bouton Ajouter ----------------------------------
-
-            // je configure un eventListener quand l'utilisateur clique sur ajouter au panier
-
-            addCartBtn.addEventListener('click', function (e) {
-                e.preventDefault();
-                
-                const cartId = idProduct + "_" + colorsProduct.value; // je personnalise l' id de chaque produit en y ajoutant sa couleur afin de me faciliter la manipulation des mes id
-
-                if (colorsProduct.value === "") {
-                    alert('Veuillez sélectionner une couleur');
-                } else {
-                    if (Number(idQuantity.value) < 1 || Number(idQuantity.value) > 100) {
-                        alert('Veuillez sélectionner une valeur entre 1 et 100');
-                    } else {
-                        addCart(cartId, Number(idQuantity.value));   // Appel la fonction "Ajouter au panier" qui prend en compte l'id et la quantité
-                        alert(" Le canapé " + productDetail.name + " de couleur " + colorsProduct.value + " a été ajouté " + idQuantity.value + " fois dans le panier ")
-                    }
-                }
-            })
         }).catch(function (error) {
             console.log(error);
         });
+
 }
 fetchProduit();
+
+/**
+ * Cette fonction paramètre le bouton "Ajouter au panier"
+ */
+function addButton() {
+
+    addCartBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        const cartId = idProduct + "_" + colorsProduct.value; // je personnalise l' id de chaque produit en y ajoutant sa couleur afin de me faciliter la manipulation des mes id
+
+        if (colorsProduct.value === "") {
+            alert('Veuillez sélectionner une couleur');
+        } else {
+            if (Number(idQuantity.value) < 1 || Number(idQuantity.value) > 100) {
+                alert('Veuillez sélectionner une valeur entre 1 et 100');
+            } else {
+                addCart(cartId, Number(idQuantity.value));   // Appel la fonction "Ajouter au panier" qui prend en compte l'id et la quantité
+                alert(" Le canapé " + titleProduct.innerText + " de couleur " + colorsProduct.value + " a été ajouté " + idQuantity.value + " fois dans le panier ")
+            }
+        }
+    })
+}
+addButton();
+

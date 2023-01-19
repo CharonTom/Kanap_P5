@@ -1,35 +1,46 @@
-// La fonction saveCart() utilise la méthode setItem() avec un duo clé-valeur 
-// Elle les ajoute dans le local storage, si la clé existe déjà elle met à jour la valeur
+/**
+ * La fonction saveCart() utilise la méthode setItem() avec un duo clé-valeur
+ * Elle les ajoute dans le local storage, si la clé existe déjà elle met à jour la valeur
+ * @param {string} Cart 
+ */
 
 function saveCart(Cart) {
     localStorage.setItem("MyKanapCart", JSON.stringify(Cart));
 }
 
-// La fonction getCart() utilise la méthode getItem() qui récupère la valeur associée à la clé.
-// Je récupère donc le contenu du panier nommé MyKanapCart, si le panier est null un tableau vide et retourné
+
+/**
+ * La fonction getCart() utilise la méthode getItem() qui récupère la valeur associée à la clé
+ * Je récupère donc le contenu du panier nommé MyKanapCart 
+ * @returns si le panier est null un tableau vide est retourné, sinon on récupère son contenu
+ */
 
 function getCart() {
     let Cart = localStorage.getItem("MyKanapCart");
 
     if (Cart == null) {
         return [];
-    }
-    else {
+    } else {
         return JSON.parse(Cart);
     }
 }
 
 
-//--------------------------------------- Ajouter un produit dans le panier-----------------------------
+/**
+ * Permet d'ajouter un produit dans le panier
+ * on récupère les valeurs du local storage et on les met dans la variable Cart
+ * On parcours ces valeurs et si le produit ajouté existe déjà, les quantités s'additionnent
+ * Sinon on récupère les données du produit ajouté et on les met dans le Local Storage
+ * @param {string} _id 
+ * @param {number} quantity 
+ */
 
 function addCart(_id, quantity) {
-    let Cart = getCart();                                      // Récupère les valeurs du Local Storage et les met dans la variable Cart
-    const Index = Cart.findIndex(p => p.id === _id);           // On parcours ces valeurs
+    let Cart = getCart();
+    const Index = Cart.findIndex(p => p.id === _id);
     if (Index !== -1) {
-        Cart[Index].quantity += quantity;                      // Si le produit ajouté existe déjà, les quantités s'additionnent
-
-    }
-    else {
+        Cart[Index].quantity += quantity;
+    } else {
         const product = {
             id: _id,
             quantity: quantity,
@@ -39,15 +50,16 @@ function addCart(_id, quantity) {
             imgurl: imgurl,
             alttxt: alttxt
         }
-        Cart.push(product);                      // Sinon on récupère les données du produit qu'on veut ajouter et on les poussent dans le Local Storage
+        Cart.push(product);
     }
-    saveCart(Cart);                              // On sauvegarde le panier
+    saveCart(Cart); // On sauvegarde le panier
 }
 
 
-
-
-//-------------------------------------Supprimer un article du panier------------------------------------
+/**
+ * Supprime un article du panier
+ * @param {string} _id 
+ */
 
 function removeFromCart(_id) {
     let Cart = getCart();
@@ -55,7 +67,12 @@ function removeFromCart(_id) {
     saveCart(Cart);
 }
 
-//------------------------------------ Change la quantité d'un produit----------------------------------
+
+/**
+ * Change la quantité d'un produit
+ * @param {string} _id 
+ * @param {number} quantity 
+ */
 
 function changeQuantity(_id, quantity) {
     let Cart = getCart();
@@ -73,8 +90,12 @@ function changeQuantity(_id, quantity) {
     }
 }
 
-//---------------------------Récupérer la quantité d'un article dans le local storage-----------------------------------
-// Cette fonction permet de récupérer la quantité d'un id du local storage lorsque elle est appellée.
+
+/**
+ * Cette fonction permet de récupérer la quantité d'un id du local storage lorsque elle est appellée
+ * @param {string} _id 
+ * @returns Si l'id est dans le local storage je retourne sa quantité sinon je retourne -1
+ */
 
 function getQuantity(_id) {
     let Cart = getCart();
@@ -82,13 +103,16 @@ function getQuantity(_id) {
         p => p.id == _id
     );
     if (foundProduct != undefined) {
-        return foundProduct.quantity; // Si l'id est dans le local storage je retourne sa quantité
+        return foundProduct.quantity;
     }
     return -1;
 }
 
-//------------------------------------- La somme des articles----------------------------------
-// La fonction getNumberProduct relève la quantité de produits dans le localStorage et les affiches dans la page Panier
+
+/**
+ * La fonction getNumberProduct relève la quantité des produits dans le localStorage et les affiches dans la page Panier
+ * 
+ */
 
 function getNumberProduct() {
     const totalQuantity = document.getElementById('totalQuantity');
@@ -97,11 +121,13 @@ function getNumberProduct() {
     for (let product of Cart) {
         number += product.quantity;      // je récupère la quantité de produit sous la forme d'un nombre
     }
-    totalQuantity.textContent = number;  // j'affiche ce nombre à l'endroit voulu
+    totalQuantity.textContent = number;  // j'affiche ce nombre dans le DOM
 }
 
-//----------------------------------- La somme des prix-----------------------------
-// La fonction getTotalPrice() calcule le prix total des produits et les affiches dans la page Panier
+
+/**
+ * La fonction getTotalPrice() calcule le prix total des produits et les affiches dans la page Panier
+ */
 
 function getTotalPrice() {
     const totalPrice = document.getElementById('totalPrice');

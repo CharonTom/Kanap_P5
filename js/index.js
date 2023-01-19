@@ -1,5 +1,7 @@
-//----------------------------------------- Appel de l' API qui contient les produits -------------------------------
-
+/**
+ * Cette fonction permet d'appeler l'API qui contient les produits
+ * et appel la fonction qui construit le DOM
+ */
 function fetchCanap() {
     fetch("https://p5-kanap-production.up.railway.app/api/products")
         .then(function (res) {
@@ -7,7 +9,6 @@ function fetchCanap() {
                 return res.json();
         })
         .then(function (products) {
-            console.log(products);  // Affiche le contenant de l'API dans la console
 
             const items = document.getElementById("items"); // Je récupère l'endroit où je vais implémenter mon DOM
 
@@ -23,27 +24,30 @@ function fetchCanap() {
         });
 }
 
-//-----------------------------------------Construction du DOM------------------------------------------
-
+/**
+ * Cette fonction permet de construire le DOM de la page d'accueil
+ * 
+ * @param {string} id 
+ * @param {string} name 
+ * @param {string} description 
+ * @param {string} imageUrl 
+ * @param {string} altTxt 
+ * @returns retourne l'article construit
+ */
 function buildProductDOM(id, name, description, imageUrl, altTxt) {
 
     let a = document.createElement("a");
     a.href = "./product.html?id=" + id;        // créer une balise "lien" avec un lien de redirection auquel il est ajouté l'id du produit choisit
-
     let article = document.createElement("article");     // Créer une balise article
-
     let img = document.createElement("img");
     img.src = imageUrl;
     img.alt = altTxt;                           // créer une balise image et indique le src et alt
-
     let h3 = document.createElement("h3");
     h3.classList.add('productName');
     h3.textContent = name;                      // créer une balise h3 avec une classe dedans et ajoute un titre
-
     let p = document.createElement("p");
     p.classList.add('productDescription');
     p.textContent = description;                // créer une balise P avec une classe dedans, et ajoute un texte de description   
-
     article.append(img);
     article.append(h3);
     article.append(p);                          // insère les éléments img h3 et p dans la balise article
